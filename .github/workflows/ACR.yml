@@ -1,13 +1,10 @@
 #Build a Docker image and Push it to ACR
 name: 'ACR'
-
 on:
   push:
-    branches: [ main ]
+    branches:
+    - main
   pull_request:
-    branches: [ main ]
-
-  workflow_dispatch:
 
 jobs:
   ACR:
@@ -20,10 +17,12 @@ jobs:
 
     runs-on: ubuntu-latest
     environment: dev
-    
-  build:
-    runs-on: ubuntu-latest
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
     steps:
+    # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
       
