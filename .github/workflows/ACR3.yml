@@ -14,9 +14,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main	
-      
-
     - run: |
         docker build . -t testapp/appdb:${{ github.sha }}
         docker push testapp/appdb:${{ github.sha }}
-		    docker run -it -p 80:80 testapp/appdb:${{ github.sha }}
+	docker run -it -p 80:80 testapp/appdb:${{ github.sha }}
