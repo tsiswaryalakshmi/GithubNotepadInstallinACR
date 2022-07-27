@@ -44,5 +44,5 @@ jobs:
         registry-username: ${{ secrets.ACR_USERNAME }}
         registry-password: ${{ secrets.ACR_PASSWORD }}
         name: aci-sampleapp
-        osType: Windows
+        OS: Windows
         location: 'East US'		
