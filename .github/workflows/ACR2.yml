@@ -25,17 +25,22 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v2
+	  
+#    - name: 'Login via Azure CLI'
+#      uses: azure/login@v1
+#      with:
+#        creds: ${{ secrets.AZURE_CREDENTIALS }}
       
     - name: AzureContainerLogin
       uses: azure/docker-login@v1
       with:
-        login-server: mytestacr007.azurecr.io
+        login-server: ${{ secrets.ACR_LOGIN_SERVER }}
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
 
     - run: |
-        docker build . -t ${{ secrets.ACR_LOGIN_SERVER }}/appdb:${{ github.sha }}
-        docker push ${{ secrets.ACR_LOGIN_SERVER }}/appdb:${{ github.sha }}
+        docker build . -t ${{ secrets.ACR_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+        docker push ${{ secrets.ACR_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
 
     - name: 'Deploy to Azure Container Instances'
       uses: 'azure/aci-deploy@v1'
