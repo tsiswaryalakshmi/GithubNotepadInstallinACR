@@ -1,0 +1,36 @@
+name: Build a Docker image and Push it to ACR
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  azurelogin:
+    name: 'Azure Login'
+    env:
+      ARM_CLIENT_ID: ${{ secrets.AZURE_AD_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.AZURE_AD_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.AZURE_AD_TENANT_ID }}
+
+    runs-on: ubuntu-latest
+    environment: dev
+    
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: azure/docker-login@v1
+        with:
+          login-server: mytestacr007.azurecr.io
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - run: |
+          docker build . -t mytestacr007.azurecr.io/appdb:${{ github.sha }}
+          docker push mytestacr007.azurecr.io/appdb:${{ github.sha }}
