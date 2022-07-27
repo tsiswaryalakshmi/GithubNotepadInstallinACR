@@ -23,9 +23,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    
-    - uses: azure/docker-login@v1
+    - name: Checkout
+      uses: actions/checkout@v2
+      
+    - name: AzureContainerLogin
+      uses: azure/docker-login@v1
       with:
         login-server: mytestacr007.azurecr.io
         username: ${{ secrets.ACR_USERNAME }}
